@@ -53,7 +53,24 @@ struct SecondView: View{
             Button("Change Alert Type to loading"){
                 viewModel.alertToast = AlertToast(type: .loading, title: "Loading..", subTitle: nil)
             }
-            
+
+            Button("Show a banner toast"){
+                viewModel.alertToast = AlertToast(
+                    displayMode: .banner(.pop),
+                    type: .systemImage("checkmark.circle", Color.purple),
+                    title: "Well done!",
+                    subTitle: "Here be a subtitle, matey!",
+                    style: .style(
+                        backgroundColor: Color.green,
+                        titleColor: Color.purple,
+                        subTitleColor: Color.pink,
+                        titleFont: Font.title,
+                        subTitleFont: Font.custom("Marker Felt", size: 12),
+                        bannerAligmnent: .center
+                    )
+                )
+            }
+
             
             
         }

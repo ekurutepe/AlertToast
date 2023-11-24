@@ -249,7 +249,12 @@ public struct AlertToast: View{
             
             //Banner view starts here
             VStack(alignment: style?.bannerAligmnent ?? .leading, spacing: 10){
-                HStack{
+                HStack {
+
+                    if (style?.bannerAligmnent == .center || style?.bannerAligmnent == .trailing) {
+                        Spacer(minLength: 0)
+                    }
+
                     switch type{
                     case .complete(let color):
                         Image(systemName: "checkmark")
@@ -272,8 +277,12 @@ public struct AlertToast: View{
                     
                     Text(LocalizedStringKey(title ?? ""))
                         .font(style?.titleFont ?? Font.headline.bold())
+
+                    if (style?.bannerAligmnent == .leading || style?.bannerAligmnent == .center) {
+                        Spacer(minLength: 0)
+                    }
                 }
-                
+
                 if let subTitle = subTitle {
                     Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.subheadline)
