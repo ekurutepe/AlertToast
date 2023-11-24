@@ -264,8 +264,8 @@ public struct AlertToast: View{
                         .font(style?.titleFont ?? Font.headline.bold())
                 }
                 
-                if subTitle != nil{
-                    Text(LocalizedStringKey(subTitle!))
+                if let subTitle = subTitle {
+                    Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.subheadline)
                 }
             }
@@ -308,14 +308,14 @@ public struct AlertToast: View{
                 
                 if title != nil || subTitle != nil{
                     VStack(alignment: type == .regular ? .center : .leading, spacing: 2){
-                        if title != nil{
-                            Text(LocalizedStringKey(title ?? ""))
+                        if let title = title {
+                            Text(LocalizedStringKey(title))
                                 .font(style?.titleFont ?? Font.body.bold())
                                 .multilineTextAlignment(.center)
                                 .textColor(style?.titleColor ?? nil)
                         }
-                        if subTitle != nil{
-                            Text(LocalizedStringKey(subTitle ?? ""))
+                        if let subTitle = subTitle {
+                            Text(LocalizedStringKey(subTitle))
                                 .font(style?.subTitleFont ?? Font.footnote)
                                 .opacity(0.7)
                                 .multilineTextAlignment(.center)
@@ -374,14 +374,14 @@ public struct AlertToast: View{
             }
             
             VStack(spacing: type == .regular ? 8 : 2){
-                if title != nil{
-                    Text(LocalizedStringKey(title ?? ""))
+                if let title = title {
+                    Text(LocalizedStringKey(title))
                         .font(style?.titleFont ?? Font.body.bold())
                         .multilineTextAlignment(.center)
                         .textColor(style?.titleColor ?? nil)
                 }
-                if subTitle != nil{
-                    Text(LocalizedStringKey(subTitle ?? ""))
+                if let subTitle = subTitle {
+                    Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.footnote)
                         .opacity(0.7)
                         .multilineTextAlignment(.center)
@@ -632,7 +632,7 @@ fileprivate struct BackgroundModifier: ViewModifier{
     
     @ViewBuilder
     func body(content: Content) -> some View {
-        if color != nil{
+        if let color = color {
             content
                 .background(color)
         }else{
@@ -650,7 +650,7 @@ fileprivate struct TextForegroundModifier: ViewModifier{
     
     @ViewBuilder
     func body(content: Content) -> some View {
-        if color != nil{
+        if let color = color {
             content
                 .foregroundColor(color)
         }else{
