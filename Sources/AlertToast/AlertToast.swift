@@ -132,18 +132,21 @@ public struct AlertToast: View{
     
     /// Customize Alert Appearance
     public enum AlertStyle: Equatable{
-        
-        case style(backgroundColor: Color? = nil,
-                   titleColor: Color? = nil,
-                   subTitleColor: Color? = nil,
-                   borderColor: Color? = nil,
-                   titleFont: Font? = nil,
-                   subTitleFont: Font? = nil)
-        
+
+        case style(
+            backgroundColor: Color? = nil,
+            titleColor: Color? = nil,
+            subTitleColor: Color? = nil,
+            borderColor: Color? = nil,
+            titleFont: Font? = nil,
+            subTitleFont: Font? = nil,
+            bannerAligmnent: HorizontalAlignment? = nil
+        )
+
         ///Get background color
         var backgroundColor: Color? {
-            switch self{
-            case .style(backgroundColor: let color, _, _, _, _, _):
+            switch self {
+            case .style(backgroundColor: let color, _, _, _, _, _, _):
                 return color
             }
         }
@@ -151,7 +154,7 @@ public struct AlertToast: View{
         /// Get title color
         var titleColor: Color? {
             switch self{
-            case .style(_,let color, _, _,_,_):
+            case .style(_,let color, _, _, _, _, _):
                 return color
             }
         }
@@ -159,7 +162,7 @@ public struct AlertToast: View{
         /// Get subTitle color
         var subtitleColor: Color? {
             switch self{
-            case .style(_,_, let color, _, _,_):
+            case .style(_, _, let color, _, _, _, _):
                 return color
             }
         }
@@ -167,7 +170,7 @@ public struct AlertToast: View{
         /// Get border color
         var borderColor: Color? {
             switch self{
-            case .style(_, _, _, let color, _, _):
+            case .style(_, _, _, let color, _, _, _):
                 return color
             }
         }
@@ -175,7 +178,7 @@ public struct AlertToast: View{
         /// Get title font
         var titleFont: Font? {
             switch self {
-            case .style(_, _, _, _, titleFont: let font, _):
+            case .style(_, _, _, _, titleFont: let font, _, _):
                 return font
             }
         }
@@ -183,8 +186,15 @@ public struct AlertToast: View{
         /// Get subTitle font
         var subTitleFont: Font? {
             switch self {
-            case .style(_, _, _, _, _, subTitleFont: let font):
+            case .style(_, _, _, _, _, subTitleFont: let font, _):
                 return font
+            }
+        }
+
+        var bannerAligmnent: HorizontalAlignment? {
+            switch self {
+            case .style(_, _, _, _, _, _, let alignment):
+                return alignment
             }
         }
     }
@@ -238,7 +248,7 @@ public struct AlertToast: View{
             Spacer()
             
             //Banner view starts here
-            VStack(alignment: .leading, spacing: 10){
+            VStack(alignment: style?.bannerAligmnent ?? .leading, spacing: 10){
                 HStack{
                     switch type{
                     case .complete(let color):
