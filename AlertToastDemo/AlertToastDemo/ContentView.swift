@@ -54,6 +54,15 @@ struct SecondView: View{
                 viewModel.alertToast = AlertToast(type: .loading, title: "Loading..", subTitle: nil)
             }
 
+            Button("Show a top alert HUD"){
+                viewModel.alertToast = AlertToast(
+                    displayMode: .hud,
+                    type: .regular,
+                    title: "Done!",
+                    subTitle: nil
+                )
+            }
+
             Button("Show a banner toast"){
                 viewModel.alertToast = AlertToast(
                     displayMode: .banner(.pop),
@@ -71,8 +80,6 @@ struct SecondView: View{
                 )
             }
 
-            
-            
         }
     }
 }
