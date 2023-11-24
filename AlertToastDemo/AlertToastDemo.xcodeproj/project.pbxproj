@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,7 +14,7 @@
 		7B8AD6D728F9CD91003EE035 /* AlertToastDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AD6D628F9CD91003EE035 /* AlertToastDemoTests.swift */; };
 		7B8AD6E128F9CD91003EE035 /* AlertToastDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AD6E028F9CD91003EE035 /* AlertToastDemoUITests.swift */; };
 		7B8AD6E328F9CD91003EE035 /* AlertToastDemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8AD6E228F9CD91003EE035 /* AlertToastDemoUITestsLaunchTests.swift */; };
-		7B8AD6F128F9CFC0003EE035 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 7B8AD6F028F9CFC0003EE035 /* AlertToast */; };
+		E11935ED2B10BFBE00B3A134 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = E11935EC2B10BFBE00B3A134 /* AlertToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B8AD6F128F9CFC0003EE035 /* AlertToast in Frameworks */,
+				E11935ED2B10BFBE00B3A134 /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +146,7 @@
 			);
 			name = AlertToastDemo;
 			packageProductDependencies = (
-				7B8AD6F028F9CFC0003EE035 /* AlertToast */,
+				E11935EC2B10BFBE00B3A134 /* AlertToast */,
 			);
 			productName = AlertToastDemo;
 			productReference = 7B8AD6C228F9CD8C003EE035 /* AlertToastDemo.app */;
@@ -221,7 +221,7 @@
 			);
 			mainGroup = 7B8AD6B928F9CD8C003EE035;
 			packageReferences = (
-				7B8AD6EF28F9CFC0003EE035 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				E11935EB2B10BFBE00B3A134 /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 7B8AD6C328F9CD8C003EE035 /* Products */;
 			projectDirPath = "";
@@ -592,21 +592,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		7B8AD6EF28F9CFC0003EE035 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elai950/AlertToast.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		E11935EB2B10BFBE00B3A134 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7B8AD6F028F9CFC0003EE035 /* AlertToast */ = {
+		E11935EC2B10BFBE00B3A134 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7B8AD6EF28F9CFC0003EE035 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
 		};
 /* End XCSwiftPackageProductDependency section */
