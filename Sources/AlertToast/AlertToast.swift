@@ -255,27 +255,29 @@ public struct AlertToast: View{
                         Spacer(minLength: 0)
                     }
 
-                    switch type{
-                    case .complete(let color):
-                        Image(systemName: "checkmark")
-                            .foregroundColor(color)
-                    case .error(let color):
-                        Image(systemName: "xmark")
-                            .foregroundColor(color)
-                    case .systemImage(let name, let color):
-                        Image(systemName: name)
-                            .foregroundColor(color)
-                    case .image(let name, let color):
-                        Image(name)
-                            .renderingMode(.template)
-                            .foregroundColor(color)
-                    case .loading:
-                        ProgressView()
-                    case .regular:
-                        EmptyView()
+                    Group {
+                        switch type{
+                        case .complete(let color):
+                            Image(systemName: "checkmark")
+                                .foregroundColor(color)
+                        case .error(let color):
+                            Image(systemName: "xmark")
+                                .foregroundColor(color)
+                        case .systemImage(let name, let color):
+                            Image(systemName: name)
+                                .foregroundColor(color)
+                        case .image(let name, let color):
+                            Image(name)
+                                .renderingMode(.template)
+                                .foregroundColor(color)
+                        case .loading:
+                            ProgressView()
+                        case .regular:
+                            EmptyView()
+                        }
+
+                        Text(LocalizedStringKey(title ?? ""))
                     }
-                    
-                    Text(LocalizedStringKey(title ?? ""))
                         .font(style?.titleFont ?? Font.headline.bold())
 
                     if (style?.bannerAligmnent == .leading || style?.bannerAligmnent == .center) {
