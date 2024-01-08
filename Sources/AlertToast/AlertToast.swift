@@ -132,17 +132,21 @@ public struct AlertToast: View{
     
     /// Customize Alert Appearance
     public enum AlertStyle: Equatable{
-        
-        case style(backgroundColor: Color? = nil,
-                   titleColor: Color? = nil,
-                   subTitleColor: Color? = nil,
-                   titleFont: Font? = nil,
-                   subTitleFont: Font? = nil)
-        
+
+        case style(
+            backgroundColor: Color? = nil,
+            titleColor: Color? = nil,
+            subTitleColor: Color? = nil,
+            borderColor: Color? = nil,
+            titleFont: Font? = nil,
+            subTitleFont: Font? = nil,
+            bannerAligmnent: HorizontalAlignment? = nil
+        )
+
         ///Get background color
         var backgroundColor: Color? {
-            switch self{
-            case .style(backgroundColor: let color, _, _, _, _):
+            switch self {
+            case .style(backgroundColor: let color, _, _, _, _, _, _):
                 return color
             }
         }
@@ -150,7 +154,7 @@ public struct AlertToast: View{
         /// Get title color
         var titleColor: Color? {
             switch self{
-            case .style(_,let color, _,_,_):
+            case .style(_,let color, _, _, _, _, _):
                 return color
             }
         }
@@ -158,7 +162,15 @@ public struct AlertToast: View{
         /// Get subTitle color
         var subtitleColor: Color? {
             switch self{
-            case .style(_,_, let color, _,_):
+            case .style(_, _, let color, _, _, _, _):
+                return color
+            }
+        }
+        
+        /// Get border color
+        var borderColor: Color? {
+            switch self{
+            case .style(_, _, _, let color, _, _, _):
                 return color
             }
         }
@@ -166,7 +178,7 @@ public struct AlertToast: View{
         /// Get title font
         var titleFont: Font? {
             switch self {
-            case .style(_, _, _, titleFont: let font, _):
+            case .style(_, _, _, _, titleFont: let font, _, _):
                 return font
             }
         }
@@ -174,8 +186,15 @@ public struct AlertToast: View{
         /// Get subTitle font
         var subTitleFont: Font? {
             switch self {
-            case .style(_, _, _, _, subTitleFont: let font):
+            case .style(_, _, _, _, _, subTitleFont: let font, _):
                 return font
+            }
+        }
+
+        var bannerAligmnent: HorizontalAlignment? {
+            switch self {
+            case .style(_, _, _, _, _, _, let alignment):
+                return alignment
             }
         }
     }
@@ -229,34 +248,45 @@ public struct AlertToast: View{
             Spacer()
             
             //Banner view starts here
-            VStack(alignment: .leading, spacing: 10){
-                HStack{
-                    switch type{
-                    case .complete(let color):
-                        Image(systemName: "checkmark")
-                            .foregroundColor(color)
-                    case .error(let color):
-                        Image(systemName: "xmark")
-                            .foregroundColor(color)
-                    case .systemImage(let name, let color):
-                        Image(systemName: name)
-                            .foregroundColor(color)
-                    case .image(let name, let color):
-                        Image(name)
-                            .renderingMode(.template)
-                            .foregroundColor(color)
-                    case .loading:
-                        ActivityIndicator()
-                    case .regular:
-                        EmptyView()
+            VStack(alignment: style?.bannerAligmnent ?? .leading, spacing: 10){
+                HStack {
+
+                    if (style?.bannerAligmnent == .center || style?.bannerAligmnent == .trailing) {
+                        Spacer(minLength: 0)
                     }
-                    
-                    Text(LocalizedStringKey(title ?? ""))
+
+                    Group {
+                        switch type{
+                        case .complete(let color):
+                            Image(systemName: "checkmark")
+                                .foregroundColor(color)
+                        case .error(let color):
+                            Image(systemName: "xmark")
+                                .foregroundColor(color)
+                        case .systemImage(let name, let color):
+                            Image(systemName: name)
+                                .foregroundColor(color)
+                        case .image(let name, let color):
+                            Image(name)
+                                .renderingMode(.template)
+                                .foregroundColor(color)
+                        case .loading:
+                            ProgressView()
+                        case .regular:
+                            EmptyView()
+                        }
+
+                        Text(LocalizedStringKey(title ?? ""))
+                    }
                         .font(style?.titleFont ?? Font.headline.bold())
+
+                    if (style?.bannerAligmnent == .leading || style?.bannerAligmnent == .center) {
+                        Spacer(minLength: 0)
+                    }
                 }
-                
-                if subTitle != nil{
-                    Text(LocalizedStringKey(subTitle!))
+
+                if let subTitle = subTitle {
+                    Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.subheadline)
                 }
             }
@@ -292,21 +322,21 @@ public struct AlertToast: View{
                         .hudModifier()
                         .foregroundColor(color)
                 case .loading:
-                    ActivityIndicator()
+                    ProgressView()
                 case .regular:
                     EmptyView()
                 }
                 
                 if title != nil || subTitle != nil{
                     VStack(alignment: type == .regular ? .center : .leading, spacing: 2){
-                        if title != nil{
-                            Text(LocalizedStringKey(title ?? ""))
+                        if let title = title {
+                            Text(LocalizedStringKey(title))
                                 .font(style?.titleFont ?? Font.body.bold())
                                 .multilineTextAlignment(.center)
                                 .textColor(style?.titleColor ?? nil)
                         }
-                        if subTitle != nil{
-                            Text(LocalizedStringKey(subTitle ?? ""))
+                        if let subTitle = subTitle {
+                            Text(LocalizedStringKey(subTitle))
                                 .font(style?.subTitleFont ?? Font.footnote)
                                 .opacity(0.7)
                                 .multilineTextAlignment(.center)
@@ -320,7 +350,7 @@ public struct AlertToast: View{
             .frame(minHeight: 50)
             .alertBackground(style?.backgroundColor ?? nil)
             .clipShape(Capsule())
-            .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
+            .overlay(Capsule().stroke(style?.borderColor ?? Color.gray.opacity(0.2), lineWidth: 1))
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 6)
             .compositingGroup()
         }
@@ -359,20 +389,20 @@ public struct AlertToast: View{
                     .padding(.bottom)
                 Spacer()
             case .loading:
-                ActivityIndicator()
+                ProgressView()
             case .regular:
                 EmptyView()
             }
             
             VStack(spacing: type == .regular ? 8 : 2){
-                if title != nil{
-                    Text(LocalizedStringKey(title ?? ""))
+                if let title = title {
+                    Text(LocalizedStringKey(title))
                         .font(style?.titleFont ?? Font.body.bold())
                         .multilineTextAlignment(.center)
                         .textColor(style?.titleColor ?? nil)
                 }
-                if subTitle != nil{
-                    Text(LocalizedStringKey(subTitle ?? ""))
+                if let subTitle = subTitle {
+                    Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.footnote)
                         .opacity(0.7)
                         .multilineTextAlignment(.center)
@@ -406,7 +436,7 @@ public struct AlertToastModifier: ViewModifier{
     @Binding var isPresenting: Bool
     
     ///Duration time to display the alert
-    @State var duration: Double = 2
+    @State var duration: TimeInterval = 2
     
     ///Tap to dismiss alert
     @State var tapToDismiss: Bool = true
@@ -461,7 +491,7 @@ public struct AlertToastModifier: ViewModifier{
             case .hud:
                 alert()
                     .overlay(
-                        GeometryReader{ geo -> AnyView in
+                        GeometryReader{ geo -> Color in
                             let rect = geo.frame(in: .global)
                             
                             if rect.integral != alertRect.integral{
@@ -471,7 +501,7 @@ public struct AlertToastModifier: ViewModifier{
                                     self.alertRect = rect
                                 }
                             }
-                            return AnyView(EmptyView())
+                            return Color.clear
                         }
                     )
                     .onTapGesture {
@@ -528,7 +558,7 @@ public struct AlertToastModifier: ViewModifier{
         case .hud:
             content
                 .overlay(
-                    GeometryReader{ geo -> AnyView in
+                    GeometryReader{ geo -> Color in
                         let rect = geo.frame(in: .global)
                         
                         if rect.integral != hostRect.integral{
@@ -537,7 +567,7 @@ public struct AlertToastModifier: ViewModifier{
                             }
                         }
                         
-                        return AnyView(EmptyView())
+                        return Color.clear
                     }
                         .overlay(ZStack{
                             main()
@@ -623,7 +653,7 @@ fileprivate struct BackgroundModifier: ViewModifier{
     
     @ViewBuilder
     func body(content: Content) -> some View {
-        if color != nil{
+        if let color = color {
             content
                 .background(color)
         }else{
@@ -641,7 +671,7 @@ fileprivate struct TextForegroundModifier: ViewModifier{
     
     @ViewBuilder
     func body(content: Content) -> some View {
-        if color != nil{
+        if let color = color {
             content
                 .foregroundColor(color)
         }else{
@@ -678,8 +708,37 @@ public extension View{
     ///   - show: Binding<Bool>
     ///   - alert: () -> AlertToast
     /// - Returns: `AlertToast`
-    func toast(isPresenting: Binding<Bool>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping () -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View{
+    func toast(isPresenting: Binding<Bool>, duration: TimeInterval = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping () -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View{
         modifier(AlertToastModifier(isPresenting: isPresenting, duration: duration, tapToDismiss: tapToDismiss, offsetY: offsetY, alert: alert, onTap: onTap, completion: completion))
+    }
+    
+    /// Present `AlertToast`.
+    /// - Parameters:
+    ///   - item: Binding<Item?>
+    ///   - alert: (Item?) -> AlertToast
+    /// - Returns: `AlertToast`
+    func toast<Item>(item: Binding<Item?>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping (Item?) -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View{
+        modifier(
+            AlertToastModifier(
+                isPresenting: Binding(
+                    get: {
+                        item.wrappedValue != nil
+                    }, set: { select in
+                        if !select {
+                            item.wrappedValue = nil
+                        }
+                    }
+                ),
+                duration: duration,
+                tapToDismiss: tapToDismiss,
+                offsetY: offsetY,
+                alert: {
+                    alert(item.wrappedValue)
+                },
+                onTap: onTap,
+                completion: completion
+            )
+        )
     }
     
     /// Choose the alert background
